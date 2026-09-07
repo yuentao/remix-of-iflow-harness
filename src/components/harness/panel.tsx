@@ -219,13 +219,76 @@ function DiffCard() {
             >
               <Undo2 className="size-3" /> 回退此改动
             </button>
-            <span className="text-[10px] text-muted-foreground">回退前将确认未保存的修改</span>
+            <button className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-[11px] font-medium text-foreground transition-colors hover:bg-surface-2">
+              <Columns2 className="size-3" /> 文件对比
+            </button>
+            <span className="text-[10px] text-muted-foreground">在编辑器中并排查看</span>
           </>
         )}
       </div>
     </div>
   );
 }
+
+function SubAgentCard() {
+  const [open, setOpen] = useState(false);
+  const steps = [
+    { label: "读取 rate-limiter.test.ts 现有断言", state: "done" },
+    { label: "生成并发窗口边界用例", state: "done" },
+    { label: "运行 vitest 校验用例通过", state: "doing" },
+  ] as const;
+  return (
+    <div className="stream-in overflow-hidden rounded-lg border border-info/40 bg-card">
+      <div className="flex items-center gap-2 px-3 py-2">
+        <Bot className="size-3.5 text-info" />
+        <span className="text-[12px] font-semibold">子智能体 · 测试编写</span>
+        <span className="ml-auto">
+          <Chip tone="info">
+            <Loader2 className="size-2.5 animate-spin" /> 运行中 2/3
+          </Chip>
+        </span>
+      </div>
+      <div className="border-t border-border/60 px-3 py-2">
+        <p className="text-[11px] text-muted-foreground">
+          目标：为按 key 隔离后的限流器补齐边界测试 · 模型
+          <span className="ml-1 font-mono">iflow-coder-pro</span>
+        </p>
+        <ul className="mt-2 space-y-1.5">
+          {steps.map((s) => (
+            <li key={s.label} className="flex items-center gap-2 text-[12px]">
+              {s.state === "done" ? (
+                <CheckCircle2 className="size-3.5 shrink-0 text-success" />
+              ) : (
+                <Loader2 className="size-3.5 shrink-0 animate-spin text-info" />
+              )}
+              <span
+                className={s.state === "done" ? "text-muted-foreground" : "text-foreground"}
+              >
+                {s.label}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center gap-1.5 border-t border-border/60 px-3 py-1.5 text-[11px] text-muted-foreground hover:text-foreground"
+      >
+        {open ? <ChevronDown className="size-3" /> : <ChevronRight className="size-3" />}
+        子智能体日志
+      </button>
+      {open && (
+        <pre className="border-t border-border/60 bg-editor px-3 py-2 font-mono text-[11px] leading-relaxed text-muted-foreground">
+          {`> spawn sub-agent "test-writer"
+> tool: read_file src/lib/rate-limiter.test.ts
+> tool: write_file src/lib/rate-limiter.test.ts (+34)
+> tool: run vitest src/lib/rate-limiter.test.ts`}
+        </pre>
+      )}
+    </div>
+  );
+}
+
 
 function ApprovalCard() {
   const [decision, setDecision] = useState<string | null>(null);
