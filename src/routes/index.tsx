@@ -109,6 +109,39 @@ const TONE: Record<string, string> = {
   p: "text-foreground/80",
 };
 
+const FEATURES = [
+  {
+    icon: MessageSquare,
+    title: "结构化消息流",
+    desc: "把 Agent 的思考、工具调用、任务清单与代码改动整理成可读的时间线，不再面对一团黑盒输出。",
+  },
+  {
+    icon: ShieldCheck,
+    title: "工具审批",
+    desc: "写入文件、执行命令、调用 API 前都会弹出审批卡片，支持按次、按会话或永久授权。",
+  },
+  {
+    icon: Eye,
+    title: "行级改动对比",
+    desc: "直接在编辑器里查看新增与删除，颜色区分、行号对齐，像审阅同事 PR 一样审阅 AI 代码。",
+  },
+  {
+    icon: Undo2,
+    title: "一键回退",
+    desc: "任何改动都能秒级撤销，回退前自动检查未保存内容，避免 AI 误操作污染代码库。",
+  },
+  {
+    icon: Terminal,
+    title: "命令与模型切换",
+    desc: "/init、/commit、/model 等快捷命令，配合多模型切换，让不同任务用对的引擎。",
+  },
+  {
+    icon: Zap,
+    title: "本地优先",
+    desc: "密钥与配置留在你的工作区，支持自建网关，数据不需要经过第三方平台。",
+  },
+];
+
 function ActivityBar() {
   const icons = [Files, Search, GitBranch, Bug, Blocks];
   return (
