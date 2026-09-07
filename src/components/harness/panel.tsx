@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Bot,
   Brain,
   Check,
   CheckCircle2,
@@ -7,7 +8,9 @@ import {
   ChevronRight,
   CircleDot,
   Clock,
+  Columns2,
   FileCode2,
+  History,
   Loader2,
   Plus,
   Search,
