@@ -580,6 +580,51 @@ export function HarnessPanel() {
           </div>
         </div>
         <div className="mt-2 flex items-center gap-1.5">
+          <div className="relative min-w-0 flex-1">
+            <button
+              onClick={() => setHistoryOpen((o) => !o)}
+              className={`flex w-full items-center gap-1.5 rounded-md border border-border bg-surface px-2 py-1 text-left text-[11px] hover:bg-surface-2 ${
+                historyOpen ? "bg-surface-2" : ""
+              }`}
+              title="会话历史"
+            >
+              <History className="size-3 shrink-0 text-primary" />
+              <span className="truncate text-foreground">{session.title}</span>
+              <ChevronDown className="ml-auto size-3 shrink-0 opacity-60" />
+            </button>
+            {historyOpen && (
+              <div className="absolute left-0 top-full z-30 mt-1 w-72 overflow-hidden rounded-lg border border-border bg-popover panel-shadow">
+                <div className="px-3 py-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+                  会话历史
+                </div>
+                {SESSIONS.map((s) => (
+                  <button
+                    key={s.title}
+                    onClick={() => {
+                      setSession(s);
+                      setHistoryOpen(false);
+                    }}
+                    className="flex w-full flex-col items-start px-3 py-1.5 text-left hover:bg-accent"
+                  >
+                    <span className="flex w-full items-center gap-2 text-[12px] text-foreground">
+                      <span className="truncate">{s.title}</span>
+                      {s.title === session.title && (
+                        <Check className="ml-auto size-3 shrink-0 text-primary" />
+                      )}
+                    </span>
+                    <span className="font-mono text-[10px] text-muted-foreground">
+                      {s.time} · {s.msgs} 条消息
+                    </span>
+                  </button>
+                ))}
+                <div className="border-t border-border">
+                  <button className="w-full px-3 py-1.5 text-left text-[12px] text-muted-foreground hover:bg-accent hover:text-foreground">
+                    查看全部会话…
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
           <Chip tone="success">
             <span className="size-1.5 rounded-full bg-success" /> 正在生成
           </Chip>
@@ -594,6 +639,8 @@ export function HarnessPanel() {
         <ToolCard />
         <TaskList />
         <DiffCard />
+        <SubAgentCard />
+
         <ApprovalCard />
         <AgentReply />
       </div>
