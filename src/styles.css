@@ -1,0 +1,242 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * 心流·驭光 / iFlow Harness — VSCode-native dark design system.
+ * All colors in oklch. Accent derived from the product logo (#675cff).
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 3px);
+  --radius-md: calc(var(--radius) - 1px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chrome: var(--chrome);
+  --color-chrome-foreground: var(--chrome-foreground);
+  --color-panel: var(--panel);
+  --color-editor: var(--editor);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-diff-add: var(--diff-add);
+  --color-diff-add-fg: var(--diff-add-fg);
+  --color-diff-del: var(--diff-del);
+  --color-diff-del-fg: var(--diff-del-fg);
+  --color-syn-key: var(--syn-key);
+  --color-syn-str: var(--syn-str);
+  --color-syn-fn: var(--syn-fn);
+  --color-syn-com: var(--syn-com);
+  --color-syn-num: var(--syn-num);
+}
+
+:root {
+  --radius: 0.5rem;
+
+  --background: oklch(0.19 0.018 285);
+  --foreground: oklch(0.93 0.008 285);
+
+  --chrome: oklch(0.235 0.02 285);
+  --chrome-foreground: oklch(0.75 0.012 285);
+  --panel: oklch(0.215 0.019 285);
+  --editor: oklch(0.175 0.016 285);
+  --surface: oklch(0.255 0.021 285);
+  --surface-2: oklch(0.295 0.024 285);
+
+  --card: oklch(0.245 0.02 285);
+  --card-foreground: oklch(0.93 0.008 285);
+  --popover: oklch(0.26 0.022 285);
+  --popover-foreground: oklch(0.93 0.008 285);
+
+  --primary: oklch(0.58 0.235 279);
+  --primary-foreground: oklch(0.98 0.005 285);
+  --secondary: oklch(0.29 0.024 285);
+  --secondary-foreground: oklch(0.92 0.008 285);
+  --muted: oklch(0.28 0.02 285);
+  --muted-foreground: oklch(0.66 0.014 285);
+  --accent: oklch(0.33 0.05 282);
+  --accent-foreground: oklch(0.95 0.006 285);
+
+  --destructive: oklch(0.62 0.19 25);
+  --destructive-foreground: oklch(0.98 0.005 285);
+  --success: oklch(0.72 0.15 158);
+  --warning: oklch(0.79 0.14 78);
+  --info: oklch(0.72 0.11 235);
+
+  --border: oklch(0.31 0.021 285);
+  --input: oklch(0.31 0.021 285);
+  --ring: oklch(0.58 0.235 279);
+
+  --diff-add: oklch(0.35 0.075 158 / 45%);
+  --diff-add-fg: oklch(0.82 0.13 158);
+  --diff-del: oklch(0.36 0.09 22 / 40%);
+  --diff-del-fg: oklch(0.78 0.13 22);
+
+  --syn-key: oklch(0.72 0.14 305);
+  --syn-str: oklch(0.79 0.13 88);
+  --syn-fn: oklch(0.78 0.12 235);
+  --syn-com: oklch(0.55 0.02 285);
+  --syn-num: oklch(0.78 0.12 45);
+
+  --gradient-aurora: radial-gradient(
+    120% 100% at 12% 0%,
+    color-mix(in oklab, var(--primary) 32%, transparent),
+    transparent 62%
+  );
+  --shadow-panel: 0 24px 60px -24px oklch(0.1 0.02 285 / 80%);
+  --shadow-glow: 0 0 0 1px color-mix(in oklab, var(--primary) 45%, transparent),
+    0 10px 32px -12px color-mix(in oklab, var(--primary) 55%, transparent);
+}
+
+.light {
+  color-scheme: light;
+
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.25 0.018 275);
+
+  --chrome: oklch(0.965 0.006 265);
+  --chrome-foreground: oklch(0.46 0.025 272);
+  --panel: oklch(1 0 0);
+  --editor: oklch(0.985 0.003 265);
+  --surface: oklch(0.94 0.008 265);
+  --surface-2: oklch(0.905 0.012 265);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.25 0.018 275);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.25 0.018 275);
+
+  --primary: oklch(0.58 0.22 280);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.93 0.01 265);
+  --secondary-foreground: oklch(0.28 0.02 275);
+  --muted: oklch(0.93 0.01 265);
+  --muted-foreground: oklch(0.48 0.022 272);
+  --accent: oklch(0.9 0.04 267);
+  --accent-foreground: oklch(0.3 0.08 275);
+
+  --destructive: oklch(0.57 0.21 25);
+  --destructive-foreground: oklch(1 0 0);
+  --success: oklch(0.55 0.15 153);
+  --warning: oklch(0.65 0.15 76);
+  --info: oklch(0.58 0.18 255);
+
+  --border: oklch(0.9 0.008 265);
+  --input: oklch(0.88 0.012 265);
+  --ring: oklch(0.58 0.22 280);
+
+  --diff-add: oklch(0.91 0.06 153 / 70%);
+  --diff-add-fg: oklch(0.43 0.13 153);
+  --diff-del: oklch(0.92 0.055 24 / 70%);
+  --diff-del-fg: oklch(0.52 0.18 24);
+
+  --syn-key: oklch(0.49 0.2 288);
+  --syn-str: oklch(0.48 0.13 65);
+  --syn-fn: oklch(0.55 0.19 255);
+  --syn-com: oklch(0.57 0.025 270);
+  --syn-num: oklch(0.55 0.16 35);
+
+  --gradient-aurora: radial-gradient(
+    120% 100% at 12% 0%,
+    color-mix(in oklab, var(--primary) 14%, transparent),
+    transparent 62%
+  );
+  --shadow-panel: 0 24px 60px -24px oklch(0.35 0.03 275 / 30%);
+  --shadow-glow: 0 0 0 1px color-mix(in oklab, var(--primary) 35%, transparent),
+    0 10px 32px -16px color-mix(in oklab, var(--primary) 35%, transparent);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--foreground) 14%, transparent);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@utility aurora {
+  background-image: var(--gradient-aurora);
+}
+
+@utility panel-shadow {
+  box-shadow: var(--shadow-panel);
+}
+
+@utility glow-ring {
+  box-shadow: var(--shadow-glow);
+}
+
+@utility caret-blink {
+  animation: caret 1.1s steps(1, end) infinite;
+}
+
+@keyframes caret {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@utility stream-in {
+  animation: stream-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes stream-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
