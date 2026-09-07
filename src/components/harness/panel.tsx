@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Bot,
   Brain,
   Check,
   CheckCircle2,
@@ -7,7 +8,9 @@ import {
   ChevronRight,
   CircleDot,
   Clock,
+  Columns2,
   FileCode2,
+  History,
   Loader2,
   Plus,
   Search,
@@ -219,13 +222,76 @@ function DiffCard() {
             >
               <Undo2 className="size-3" /> 回退此改动
             </button>
-            <span className="text-[10px] text-muted-foreground">回退前将确认未保存的修改</span>
+            <button className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-[11px] font-medium text-foreground transition-colors hover:bg-surface-2">
+              <Columns2 className="size-3" /> 文件对比
+            </button>
+            <span className="text-[10px] text-muted-foreground">在编辑器中并排查看</span>
           </>
         )}
       </div>
     </div>
   );
 }
+
+function SubAgentCard() {
+  const [open, setOpen] = useState(false);
+  const steps = [
+    { label: "读取 rate-limiter.test.ts 现有断言", state: "done" },
+    { label: "生成并发窗口边界用例", state: "done" },
+    { label: "运行 vitest 校验用例通过", state: "doing" },
+  ] as const;
+  return (
+    <div className="stream-in overflow-hidden rounded-lg border border-info/40 bg-card">
+      <div className="flex items-center gap-2 px-3 py-2">
+        <Bot className="size-3.5 text-info" />
+        <span className="text-[12px] font-semibold">子智能体 · 测试编写</span>
+        <span className="ml-auto">
+          <Chip tone="info">
+            <Loader2 className="size-2.5 animate-spin" /> 运行中 2/3
+          </Chip>
+        </span>
+      </div>
+      <div className="border-t border-border/60 px-3 py-2">
+        <p className="text-[11px] text-muted-foreground">
+          目标：为按 key 隔离后的限流器补齐边界测试 · 模型
+          <span className="ml-1 font-mono">iflow-coder-pro</span>
+        </p>
+        <ul className="mt-2 space-y-1.5">
+          {steps.map((s) => (
+            <li key={s.label} className="flex items-center gap-2 text-[12px]">
+              {s.state === "done" ? (
+                <CheckCircle2 className="size-3.5 shrink-0 text-success" />
+              ) : (
+                <Loader2 className="size-3.5 shrink-0 animate-spin text-info" />
+              )}
+              <span
+                className={s.state === "done" ? "text-muted-foreground" : "text-foreground"}
+              >
+                {s.label}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center gap-1.5 border-t border-border/60 px-3 py-1.5 text-[11px] text-muted-foreground hover:text-foreground"
+      >
+        {open ? <ChevronDown className="size-3" /> : <ChevronRight className="size-3" />}
+        子智能体日志
+      </button>
+      {open && (
+        <pre className="border-t border-border/60 bg-editor px-3 py-2 font-mono text-[11px] leading-relaxed text-muted-foreground">
+          {`> spawn sub-agent "test-writer"
+> tool: read_file src/lib/rate-limiter.test.ts
+> tool: write_file src/lib/rate-limiter.test.ts (+34)
+> tool: run vitest src/lib/rate-limiter.test.ts`}
+        </pre>
+      )}
+    </div>
+  );
+}
+
 
 function ApprovalCard() {
   const [decision, setDecision] = useState<string | null>(null);
@@ -438,9 +504,18 @@ const API_CONFIGS = [
   { name: "自建网关", endpoint: "gateway.internal/v1", masked: "sk-…0c4d" },
 ];
 
+const SESSIONS = [
+  { title: "限流器按 key 隔离计数", time: "刚刚", msgs: 12 },
+  { title: "重构鉴权中间件", time: "今天 10:24", msgs: 31 },
+  { title: "修复导出 CSV 乱码", time: "昨天 18:07", msgs: 8 },
+  { title: "接入支付回调 webhook", time: "9月4日", msgs: 45 },
+];
+
 export function HarnessPanel() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [apiConfig, setApiConfig] = useState(API_CONFIGS[0]!);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [session, setSession] = useState(SESSIONS[0]!);
 
   return (
     <aside className="flex h-full w-[420px] shrink-0 flex-col border-r border-border bg-panel">
@@ -505,6 +580,51 @@ export function HarnessPanel() {
           </div>
         </div>
         <div className="mt-2 flex items-center gap-1.5">
+          <div className="relative min-w-0 flex-1">
+            <button
+              onClick={() => setHistoryOpen((o) => !o)}
+              className={`flex w-full items-center gap-1.5 rounded-md border border-border bg-surface px-2 py-1 text-left text-[11px] hover:bg-surface-2 ${
+                historyOpen ? "bg-surface-2" : ""
+              }`}
+              title="会话历史"
+            >
+              <History className="size-3 shrink-0 text-primary" />
+              <span className="truncate text-foreground">{session.title}</span>
+              <ChevronDown className="ml-auto size-3 shrink-0 opacity-60" />
+            </button>
+            {historyOpen && (
+              <div className="absolute left-0 top-full z-30 mt-1 w-72 overflow-hidden rounded-lg border border-border bg-popover panel-shadow">
+                <div className="px-3 py-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+                  会话历史
+                </div>
+                {SESSIONS.map((s) => (
+                  <button
+                    key={s.title}
+                    onClick={() => {
+                      setSession(s);
+                      setHistoryOpen(false);
+                    }}
+                    className="flex w-full flex-col items-start px-3 py-1.5 text-left hover:bg-accent"
+                  >
+                    <span className="flex w-full items-center gap-2 text-[12px] text-foreground">
+                      <span className="truncate">{s.title}</span>
+                      {s.title === session.title && (
+                        <Check className="ml-auto size-3 shrink-0 text-primary" />
+                      )}
+                    </span>
+                    <span className="font-mono text-[10px] text-muted-foreground">
+                      {s.time} · {s.msgs} 条消息
+                    </span>
+                  </button>
+                ))}
+                <div className="border-t border-border">
+                  <button className="w-full px-3 py-1.5 text-left text-[12px] text-muted-foreground hover:bg-accent hover:text-foreground">
+                    查看全部会话…
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
           <Chip tone="success">
             <span className="size-1.5 rounded-full bg-success" /> 正在生成
           </Chip>
@@ -519,6 +639,8 @@ export function HarnessPanel() {
         <ToolCard />
         <TaskList />
         <DiffCard />
+        <SubAgentCard />
+
         <ApprovalCard />
         <AgentReply />
       </div>
