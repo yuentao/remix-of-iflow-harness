@@ -14,6 +14,12 @@ import {
   Blocks,
   Moon,
   Sun,
+  ShieldCheck,
+  Eye,
+  Undo2,
+  Zap,
+  Terminal,
+  ArrowRight,
 } from "lucide-react";
 import { HarnessPanel } from "@/components/harness/panel";
 import logo from "@/assets/iflow.svg.asset.json";
