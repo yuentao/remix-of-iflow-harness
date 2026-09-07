@@ -504,9 +504,18 @@ const API_CONFIGS = [
   { name: "自建网关", endpoint: "gateway.internal/v1", masked: "sk-…0c4d" },
 ];
 
+const SESSIONS = [
+  { title: "限流器按 key 隔离计数", time: "刚刚", msgs: 12 },
+  { title: "重构鉴权中间件", time: "今天 10:24", msgs: 31 },
+  { title: "修复导出 CSV 乱码", time: "昨天 18:07", msgs: 8 },
+  { title: "接入支付回调 webhook", time: "9月4日", msgs: 45 },
+];
+
 export function HarnessPanel() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [apiConfig, setApiConfig] = useState(API_CONFIGS[0]!);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [session, setSession] = useState(SESSIONS[0]!);
 
   return (
     <aside className="flex h-full w-[420px] shrink-0 flex-col border-r border-border bg-panel">
