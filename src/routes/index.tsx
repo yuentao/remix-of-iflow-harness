@@ -14,12 +14,6 @@ import {
   Blocks,
   Moon,
   Sun,
-  ShieldCheck,
-  Eye,
-  Undo2,
-  Zap,
-  Terminal,
-  ArrowRight,
 } from "lucide-react";
 import { HarnessPanel } from "@/components/harness/panel";
 import logo from "@/assets/iflow.svg.asset.json";
@@ -109,39 +103,6 @@ const TONE: Record<string, string> = {
   p: "text-foreground/80",
 };
 
-const FEATURES = [
-  {
-    icon: MessageSquare,
-    title: "结构化消息流",
-    desc: "把 Agent 的思考、工具调用、任务清单与代码改动整理成可读的时间线，不再面对一团黑盒输出。",
-  },
-  {
-    icon: ShieldCheck,
-    title: "工具审批",
-    desc: "写入文件、执行命令、调用 API 前都会弹出审批卡片，支持按次、按会话或永久授权。",
-  },
-  {
-    icon: Eye,
-    title: "行级改动对比",
-    desc: "直接在编辑器里查看新增与删除，颜色区分、行号对齐，像审阅同事 PR 一样审阅 AI 代码。",
-  },
-  {
-    icon: Undo2,
-    title: "一键回退",
-    desc: "任何改动都能秒级撤销，回退前自动检查未保存内容，避免 AI 误操作污染代码库。",
-  },
-  {
-    icon: Terminal,
-    title: "命令与模型切换",
-    desc: "/init、/commit、/model 等快捷命令，配合多模型切换，让不同任务用对的引擎。",
-  },
-  {
-    icon: Zap,
-    title: "本地优先",
-    desc: "密钥与配置留在你的工作区，支持自建网关，数据不需要经过第三方平台。",
-  },
-];
-
 function ActivityBar() {
   const icons = [Files, Search, GitBranch, Bug, Blocks];
   return (
@@ -165,23 +126,13 @@ function ActivityBar() {
   );
 }
 
-function ThemeToggle({ isLight, onToggle }: { isLight: boolean; onToggle: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onToggle}
-      className="flex size-7 items-center justify-center rounded-md text-chrome-foreground transition-colors hover:bg-surface hover:text-foreground"
-      title={isLight ? "切换到深色主题" : "切换到浅色主题"}
-      aria-label={isLight ? "切换到深色主题" : "切换到浅色主题"}
-    >
-      {isLight ? <Moon className="size-3.5" /> : <Sun className="size-3.5" />}
-    </button>
-  );
-}
+function Index() {
+  const [isLight, setIsLight] = useState(false);
 
-function VSCodeHero({ isLight, onToggle }: { isLight: boolean; onToggle: () => void }) {
   return (
-    <div className="flex h-screen shrink-0 flex-col overflow-hidden">
+    <main
+      className={`${isLight ? "light" : ""} flex h-screen flex-col overflow-hidden bg-background text-foreground`}
+    >
       {/* title bar */}
       <div className="flex h-9 shrink-0 items-center gap-3 border-b border-border bg-chrome px-3">
         <div className="flex gap-1.5">
@@ -193,7 +144,15 @@ function VSCodeHero({ isLight, onToggle }: { isLight: boolean; onToggle: () => v
           <Search className="size-3" />
           iflow-harness — 搜索文件与命令
         </div>
-        <ThemeToggle isLight={isLight} onToggle={onToggle} />
+        <button
+          type="button"
+          onClick={() => setIsLight((current) => !current)}
+          className="flex size-7 items-center justify-center rounded-md text-chrome-foreground transition-colors hover:bg-surface hover:text-foreground"
+          title={isLight ? "切换到深色主题" : "切换到浅色主题"}
+          aria-label={isLight ? "切换到深色主题" : "切换到浅色主题"}
+        >
+          {isLight ? <Moon className="size-3.5" /> : <Sun className="size-3.5" />}
+        </button>
         <Bell className="size-3.5 text-chrome-foreground" />
       </div>
 
@@ -255,68 +214,6 @@ function VSCodeHero({ isLight, onToggle }: { isLight: boolean; onToggle: () => v
           <MessageSquare className="size-3" /> 心流·驭光：正在生成 · 智能模式 · iflow-max-2
         </span>
       </footer>
-    </div>
-  );
-}
-
-function FeaturesSection() {
-  return (
-    <section className="relative border-t border-border bg-background px-6 py-20">
-      <div className="mx-auto max-w-5xl">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-            让 AI 写代码的过程，像和同事 Pair 一样透明
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
-            心流·驭光把 Agent 的每一步拆解成可见、可控、可回退的操作，让你在编辑器里放心地把重复劳动交给 AI。
-          </p>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f) => {
-            const Icon = f.icon;
-            return (
-              <div
-                key={f.title}
-                className="group stream-in rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-card/80"
-              >
-                <div className="mb-3 inline-flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Icon className="size-5" />
-                </div>
-                <h3 className="text-[15px] font-semibold text-foreground">{f.title}</h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{f.desc}</p>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="mt-16 flex flex-col items-center gap-4 rounded-2xl border border-border bg-surface p-8 text-center">
-          <img src={logo.url} alt="心流·驭光" className="size-10" />
-          <h3 className="text-xl font-bold text-foreground">准备好接管你的 AI 工作流了吗？</h3>
-          <p className="max-w-lg text-sm text-muted-foreground">
-            加入早期体验，获取 VSCode 扩展内测资格，以及第一手的工具审批与回退策略文档。
-          </p>
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            预约内测 <ArrowRight className="size-4" />
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Index() {
-  const [isLight, setIsLight] = useState(false);
-
-  return (
-    <main
-      className={`${isLight ? "light" : ""} min-h-screen flex-col bg-background text-foreground`}
-    >
-      <VSCodeHero isLight={isLight} onToggle={() => setIsLight((current) => !current)} />
-      <FeaturesSection />
     </main>
   );
 }
